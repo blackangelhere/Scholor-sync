@@ -1,32 +1,207 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=dev">
-	<title>Learn Sphere</title>
-	<link rel="stylesheet" href="abc.css">
-   <style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Sphere</title>
+    <link rel="stylesheet" href="abc.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('abc1.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-color: #f4f9fb;
+            text-align: center;
+        }
 
-</style>
+        header {
+            background-image: url('https://i.imgur.com/RurqKDM.jpg');
+            color: white;
+            padding: 50px 20px;
+            background-position: center;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .feature {
+            margin: 10px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 24px 36px;
+            margin: 20px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }
+
+        a:link {
+            color: red;
+        }
+
+        a:visited {
+            color: green;
+        }
+
+        a:hover {
+            color: hotpink;
+        }
+
+        a:active {
+            color: blue;
+        }
+
+        .dropbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
+
+        .action-button a {
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .action-button a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<header>
-        <h1>Welcome to Scholar Sync </h1>
-        <p>Discover a world of knowledge tailored just for you. Explore topics, track your progress, and connect with a community of curious learners. Whether you're diving into new skills or refining old ones, your journey begins here.</p>
-        <button class="action-button"> <a href="login.html" target="_blank"> Login/Register </a></button>
+    <header>
+        <h1>Welcome to Scholar Sync</h1>
+        <p>Discover a world of knowledge tailored just for you.</p>
+        <div class="action-button">
+            <a href="login.html" target="_blank">Login/Register</a>
+        </div>
     </header>
+
     <section class="features">
         <div class="feature">
-            <h1>Don't Know what to do? </h1>
-        
+            <h1>Don't Know what to do?</h1>
         </div>
         <div class="feature">
-            <h2>Here you'll find mentors ,Notes and other study material </h2>
+            <h2>Here you'll find mentors, notes, and other study material</h2>
         </div>
-        <!-- More features -->
     </section>
+
+    <div class="dropdown">
+        <button class="dropbtn">Notes</button>
+        <div class="dropdown-content">
+            <a href="https://dotnotes.in/sem/sem1/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">First Semester</a>
+            <a href="https://dotnotes.in/sem/sem2/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Second Semester</a>
+            <a href="https://dotnotes.in/sem/sem3/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Third Semester</a>
+            <a href="https://dotnotes.in/sem/sem4/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Fourth Semester</a>
+            <a href="https://dotnotes.in/sem/sem5/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Fifth Semester</a>
+            <a href="https://dotnotes.in/sem/sem6/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Sixth Semester</a>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button class="dropbtn">Events</button>
+        <div class="dropdown-content">
+            <a href="#" target="_blank">GGSIPU</a>
+            <a href="#" target="_blank">MAIT</a>
+            <a href="#" target="_blank">JIMS</a>
+            <a href="#" target="_blank">DTC</a>
+            <a href="#" target="_blank">GNIT</a>
+            <a href="#" target="_blank">Others</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">WhatsAPP Communities </button>
+        <div class="dropdown-content">
+            <a href="#" target="_blank">GGSIPU</a>
+            <a href="#" target="_blank">MAIT</a>
+            <a href="#" target="_blank">JIMS</a>
+            <a href="#" target="_blank">DTC</a>
+            <a href="https://chat.whatsapp.com/FMoMOr6ML4ZB0pPUnli4px" target="_blank">GNIT</a>
+            <a href="#"target="_blank">Others</a>
+        </div>
+    </div>
+
+        <img src="lea2.png" alt="Learning Visual" style="max-width: 90%; margin-top: 20px;">
+
     <footer>
-        <p>© 2025 Scholar Sync by Hack Zila | Built for Campus Communities</p>
+        <p>&copy; 2025 Scholar Sync by Hack Zila | Built for Campus Communities</p>
     </footer>
 </body>
 </html>
