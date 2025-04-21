@@ -1,198 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Scholar Sync by Hack Zila</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-    }
-    header {
-      background: #1e3a8a;
-      padding: 20px;
-      color: white;
-      text-align: center;
-    }
-    .container {
-      padding: 30px;
-      max-width: 800px;
-      margin: auto;
-    }
-    .form-toggle {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .form-toggle button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      border: none;
-      background-color: #1e3a8a;
-      color: white;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .form-toggle button.active {
-      background-color: #2563eb;
-    }
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      display: none;
-    }
-    form.active {
-      display: block;
-    }
-    input, select, button[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    h2 {
-      color: #333;
-    }
-    #result {
-      background: #e0ffe0;
-      padding: 15px;
-      border-radius: 5px;
-      display: none;
-    }
-    footer {
-      text-align: center;
-      font-size: 14px;
-      color: #888;
-      margin-top: 40px;
-    }
-  </style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=dev">
+	<title>Learn Sphere</title>
+	<link rel="stylesheet" href="abc.css">
+   <style>
+
+</style>
 </head>
 <body>
-  <header>
-    <h1>Scholar Sync</h1>
-    <p>By Hack Zila | Connecting juniors with seniors in your college</p>
-  </header>
-
-  <div class="container">
-    <div class="form-toggle">
-      <button id="showMentee" class="active">I'm a Mentee</button>
-      <button id="showMentor">I'm a Mentor</button>
-    </div>
-
-    <!-- Mentee Form -->
-    <form id="menteeForm" class="active">
-      <h2>Mentee Signup</h2>
-      <input type="text" id="menteeName" placeholder="Your Name" required>
-      <input type="text" id="menteeCollege" placeholder="Your College Name" required>
-      <select id="menteeYear" required>
-        <option value="">Your Year of Study</option>
-        <option value="1st Year">1st Year</option>
-        <option value="2nd Year">2nd Year</option>
-      </select>
-      <input type="text" id="menteeSkill" placeholder="What do you need help with? (e.g. DSA, Resume)" required>
-      <button type="submit">Find Senior Mentor</button>
-    </form>
-
-    <!-- Mentor Form -->
-    <form id="mentorForm">
-      <h2>Mentor Signup</h2>
-      <input type="text" id="mentorName" placeholder="Your Name" required>
-      <input type="text" id="mentorCollege" placeholder="Your College Name" required>
-      <select id="mentorYear" required>
-        <option value="">Your Year of Study</option>
-        <option value="3rd Year">3rd Year</option>
-        <option value="4th Year">4th Year</option>
-        <option value="Graduate">Graduate</option>
-      </select>
-      <input type="text" id="mentorSkill" placeholder="Skill You Can Help With (e.g. DSA, Resume)" required>
-      <input type="text" id="bookingLink" placeholder="Calendly/Zoom/WhatsApp Link" required>
-      <button type="submit">Register as Mentor</button>
-    </form>
-
-    <div id="result">
-      <h3>Mentor Match Found!</h3>
-      <p id="matchInfo"></p>
-    </div>
-  </div>
-
-  <footer>
-    © 2025 Scholar Sync by Hack Zila | Built for Campus Communities
-  </footer>
-
-  <script>
-    const mentors = [];
-
-    // Toggle form views
-    const showMentee = document.getElementById('showMentee');
-    const showMentor = document.getElementById('showMentor');
-    const menteeForm = document.getElementById('menteeForm');
-    const mentorForm = document.getElementById('mentorForm');
-
-    showMentee.addEventListener('click', () => {
-      showMentee.classList.add('active');
-      showMentor.classList.remove('active');
-      menteeForm.classList.add('active');
-      mentorForm.classList.remove('active');
-    });
-
-    showMentor.addEventListener('click', () => {
-      showMentor.classList.add('active');
-      showMentee.classList.remove('active');
-      mentorForm.classList.add('active');
-      menteeForm.classList.remove('active');
-    });
-
-    // Mentor registration
-    mentorForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('mentorName').value;
-      const skill = document.getElementById('mentorSkill').value.toLowerCase();
-      const link = document.getElementById('bookingLink').value;
-      const college = document.getElementById('mentorCollege').value.toLowerCase();
-      const year = document.getElementById('mentorYear').value;
-
-      mentors.push({ name, skill, link, college, year });
-
-      alert("Mentor registered successfully!");
-      this.reset();
-    });
-
-    // Mentee search
-    menteeForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const menteeSkill = document.getElementById('menteeSkill').value.toLowerCase();
-      const menteeCollege = document.getElementById('menteeCollege').value.toLowerCase();
-
-      const match = mentors.find(m =>
-        m.skill.includes(menteeSkill) &&
-        m.college === menteeCollege
-      );
-
-      const resultBox = document.getElementById('result');
-      const matchInfo = document.getElementById('matchInfo');
-
-      if (match) {
-        matchInfo.innerHTML = `
-          🎓 Matched with <strong>${match.name}</strong> (${match.year}) from your college.<br>
-          Skill: <strong>${menteeSkill}</strong><br>
-          👉 <a href="${match.link}" target="_blank">Book a Session</a>
-        `;
-      } else {
-        matchInfo.innerHTML = `
-          😔 No mentor found for "${menteeSkill}" at your college right now.<br>
-          Please try again later or invite seniors to sign up!
-        `;
-      }
-
-      resultBox.style.display = 'block';
-    });
-  </script>
+<header>
+        <h1>Welcome to Scholar Sync </h1>
+        <p>Discover a world of knowledge tailored just for you. Explore topics, track your progress, and connect with a community of curious learners. Whether you're diving into new skills or refining old ones, your journey begins here.</p>
+        <button class="action-button"> <a href="login.html" target="_blank"> Login/Register </a></button>
+    </header>
+    <section class="features">
+        <div class="feature">
+            <h1>Don't Know what to do? </h1>
+        
+        </div>
+        <div class="feature">
+            <h2>Here you'll find mentors ,Notes and other study material </h2>
+        </div>
+        <!-- More features -->
+    </section>
+    <footer>
+        <p>© 2025 Scholar Sync by Hack Zila | Built for Campus Communities</p>
+    </footer>
 </body>
 </html>
