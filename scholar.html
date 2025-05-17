@@ -3,16 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn Sphere</title>
-    <link rel="stylesheet" href="abc.css">
+    <title>Scholar Sync</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-image: url('abc1.jpg');
-            background-repeat: no-repeat;
-            background-size: cover;
             background-color: #f4f9fb;
             text-align: center;
+            margin: 0;
+            padding: 0;
         }
 
         header {
@@ -26,6 +24,7 @@
             display: flex;
             justify-content: center;
             padding: 10px;
+            flex-wrap: wrap;
         }
 
         .feature {
@@ -73,20 +72,18 @@
             background-color: #111;
         }
 
-        a:link {
-            color: red;
+        /* Dropdown styling */
+        .dropdown-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
 
-        a:visited {
-            color: green;
-        }
-
-        a:hover {
-            color: hotpink;
-        }
-
-        a:active {
-            color: blue;
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 0 15px;
         }
 
         .dropbtn {
@@ -96,12 +93,8 @@
             font-size: 16px;
             border: none;
             cursor: pointer;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-            margin: 20px;
+            min-width: 160px;
+            border-radius: 4px;
         }
 
         .dropdown-content {
@@ -118,12 +111,14 @@
             padding: 12px 16px;
             text-decoration: none;
             display: block;
+            text-align: left;
         }
 
         .dropdown-content a:hover {
             background-color: #f1f1f1;
         }
 
+        /* Show dropdown on hover */
         .dropdown:hover .dropdown-content {
             display: block;
         }
@@ -132,18 +127,104 @@
             background-color: #3e8e41;
         }
 
+        /* Nested dropdown styling */
+        .nested-dropdown {
+            position: relative;
+            display: block;
+        }
+
+        .nested-dropdown a {
+            padding-right: 24px;
+            position: relative;
+        }
+
+        .nested-dropdown a::after {
+            content: "▶";
+            position: absolute;
+            right: 8px;
+            top: 12px;
+            font-size: 10px;
+        }
+
+        .nested-dropdown-content {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        .nested-dropdown:hover .nested-dropdown-content {
+            display: block;
+        }
+
         .action-button a {
+            display: inline-block;
             color: white;
             background-color: #007bff;
             padding: 10px 20px;
             border-radius: 5px;
             text-decoration: none;
+            margin-top: 15px;
         }
 
         .action-button a:hover {
             background-color: #0056b3;
         }
+        
+        /* Mobile-friendly adjustments */
+        @media (max-width: 768px) {
+            .dropdown-container {
+                flex-direction: column;
+            }
+            
+            .dropdown {
+                margin: 10px 0;
+            }
+            
+            .nested-dropdown-content {
+                left: 0;
+                top: 100%;
+            }
+            
+            /* For touch devices */
+            .touch-device .nested-dropdown > a {
+                pointer-events: none;
+            }
+            
+            .touch-device .nested-dropdown-content {
+                display: block;
+                position: static;
+                box-shadow: none;
+                padding-left: 20px;
+            }
+        }
     </style>
+    <script>
+        // Detect touch devices and add class for mobile-specific styling
+        document.addEventListener('DOMContentLoaded', function() {
+            if ('ontouchstart' in window || navigator.maxTouchPoints) {
+                document.body.classList.add('touch-device');
+                
+                // Add click handlers for touch devices
+                const nestedItems = document.querySelectorAll('.nested-dropdown > a');
+                nestedItems.forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const content = this.nextElementSibling;
+                        if (content.style.display === 'block') {
+                            content.style.display = 'none';
+                        } else {
+                            content.style.display = 'block';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
@@ -156,49 +237,60 @@
 
     <section class="features">
         <div class="feature">
-            <h1>Don't Know what to do?</h1>
+            <h2>Don't Know what to do?</h2>
         </div>
         <div class="feature">
-            <h2>Here you'll find mentors, notes, and other study material</h2>
+            <h3>Here you'll find mentors, notes, and other study material</h3>
         </div>
     </section>
 
-    <div class="dropdown">
-        <button class="dropbtn">Notes</button>
-        <div class="dropdown-content">
-            <a href="https://dotnotes.in/sem/sem1/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">First Semester</a>
-            <a href="https://dotnotes.in/sem/sem2/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Second Semester</a>
-            <a href="https://dotnotes.in/sem/sem3/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Third Semester</a>
-            <a href="https://dotnotes.in/sem/sem4/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Fourth Semester</a>
-            <a href="https://dotnotes.in/sem/sem5/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Fifth Semester</a>
-            <a href="https://dotnotes.in/sem/sem6/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Sixth Semester</a>
+    <div class="dropdown-container">
+        <!-- Notes dropdown -->
+        <div class="dropdown">
+            <button class="dropbtn">Notes</button>
+            <div class="dropdown-content">
+                <a href="https://dotnotes.in/sem/sem1/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">First Semester</a>
+                <a href="https://dotnotes.in/sem/sem2/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Second Semester</a>
+                <a href="https://dotnotes.in/sem/sem3/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Third Semester</a>
+                <a href="https://dotnotes.in/sem/sem4/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Fourth Semester</a>
+                <a href="https://dotnotes.in/sem/sem5/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Fifth Semester</a>
+                <a href="https://dotnotes.in/sem/sem6/branch/12fczfGql33ZZH9LSFgxcrrOuIAKEzjdh/" target="_blank">Sixth Semester</a>
+            </div>
+        </div>
+
+        <!-- ABC dropdown with nested options -->
+        <div class="dropdown">
+            <button class="dropbtn">ABC</button>
+            <div class="dropdown-content">
+                <!-- IPU nested dropdown -->
+                <div class="nested-dropdown">
+                    <a href="#">IPU</a>
+                    <div class="nested-dropdown-content">
+                        <a href="https://chat.whatsapp.com/Jvmm4yvf328AMXcvOBDJdm" target="_blank">GGSIPU</a>
+                        <a href="https://chat.whatsapp.com/KFtQGEcyQq05xleLSO4h3V" target="_blank">MAIT</a>
+                        <a href="https://chat.whatsapp.com/DVWTf18Thz16AMIErzEz5H" target="_blank">JIMS</a>
+                        <a href="https://chat.whatsapp.com/Jxf1xv675ly7LtS6PiyZSF" target="_blank">DTC</a>
+                        <a href="https://chat.whatsapp.com/FMoMOr6ML4ZB0pPUnli4px" target="_blank">GNIT</a>
+                        <a href="https://chat.whatsapp.com/IOAc4R7EAdB16ktTOQl4Z1" target="_blank">FOR ALL</a>
+                    </div>
+                </div>
+                <!-- DU nested dropdown -->
+                <div class="nested-dropdown">
+                    <a href="#">DU</a>
+                    <div class="nested-dropdown-content">
+                        <a href="abc.html" target="_blank">College A</a>
+                        <a href="abc.html" target="_blank">College B</a>
+                        <a href="abc.html" target="_blank">College C</a>
+                        <a href="abc.html" target="_blank">College D</a>
+                        <a href="abc.html" target="_blank">College E</a>
+                        <a href="abc.html" target="_blank">Other Colleges</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="dropdown">
-        <button class="dropbtn">Events</button>
-        <div class="dropdown-content">
-            <a href="abc.html" target="_blank">GGSIPU</a>
-            <a href="abc.html" target="_blank">MAIT</a>
-            <a href="abc.html" target="_blank">JIMS</a>
-            <a href="abc.html" target="_blank">DTC</a>
-            <a href="abc.html" target="_blank">GNIT</a>
-            <a href="abc.html" target="_blank">Others</a>
-        </div>
-    </div>
-    <div class="dropdown">
-        <button class="dropbtn">WhatsAPP Communities </button>
-        <div class="dropdown-content">
-            <a href="https://chat.whatsapp.com/Jvmm4yvf328AMXcvOBDJdm" target="_blank">GGSIPU</a>
-            <a href="https://chat.whatsapp.com/KFtQGEcyQq05xleLSO4h3V" target="_blank">MAIT</a>
-            <a href="https://chat.whatsapp.com/DVWTf18Thz16AMIErzEz5H" target="_blank">JIMS</a>
-            <a href="https://chat.whatsapp.com/Jxf1xv675ly7LtS6PiyZSF" target="_blank">DTC</a>
-            <a href="https://chat.whatsapp.com/FMoMOr6ML4ZB0pPUnli4px" target="_blank">GNIT</a>
-            <a href="https://chat.whatsapp.com/IOAc4R7EAdB16ktTOQl4Z1" target="_blank">FOR ALL</a>
-        </div>
-    </div>
-
-        <img src="lea2.png" alt="Learning Visual" style="max-width: 90%; margin-top: 20px;">
+    <img src="/api/placeholder/800/400" alt="Learning Visual" style="max-width: 90%; margin-top: 20px;">
 
     <footer>
         <p>&copy; 2025 Scholar Sync by Hack Zila | Built for Campus Communities</p>
