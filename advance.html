@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect Digital Twin Platform</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2d5a27;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .nav-tab.active {
+            background: #4CAF50;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-panel {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-height: 600px;
+        }
+
+        .content-panel.active {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            height: 600px;
+        }
+
+        .map-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        .info-panel {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #4CAF50;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d5a27;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .ai-recommendations {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #721c24;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-good { background: #28a745; }
+        .status-warning { background: #ffc107; }
+        .status-danger { background: #dc3545; }
+
+        .vehicle-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .price-trend {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trend-up { color: #28a745; }
+        .trend-down { color: #dc3545; }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 AgriConnect Digital Twin</h1>
+            <p>Intelligent Agricultural Supply Chain Management Platform</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showPanel('dashboard')">🗺 Spatial Dashboard</button>
+            <button class="nav-tab" onclick="showPanel('ai-planner')">🧠 AI Planner</button>
+            <button class="nav-tab" onclick="showPanel('market')">📈 Market Forecast</button>
+            <button class="nav-tab" onclick="showPanel('sync')">📱 Field Sync</button>
+            <button class="nav-tab" onclick="showPanel('admin')">👥 Admin Panel</button>
+        </div>
+
+        <!-- Spatial Dashboard Panel -->
+        <div id="dashboard" class="content-panel active">
+            <div class="dashboard-grid">
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+                <div class="info-panel">
+                    <h3>📊 Real-time Metrics</h3>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value">47</div>
+                        <div class="metric-label">Active Farms</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value">12</div>
+                        <div class="metric-label">Vehicles Available</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-value">85%</div>
+                        <div class="metric-label">Storage Capacity</div>
+                    </div>
+
+                    <h4>🚛 Vehicle Status</h4>
+                    <div class="vehicle-card">
+                        <strong>Truck T-001</strong><br>
+                        <span class="status-indicator status-good"></span>Available<br>
+                        <small>Capacity: 5 tons | Location: Village Center</small>
+                    </div>
+                    
+                    <div class="vehicle-card">
+                        <strong>Tractor TR-003</strong><br>
+                        <span class="status-indicator status-warning"></span>In Transit<br>
+                        <small>Route: Farm 15 → Market A</small>
+                    </div>
+
+                    <h4>🛣 Road Conditions</h4>
+                    <div class="alert alert-warning">
+                        <strong>Route B:</strong> Heavy rain expected. Use alternate route.
+                    </div>
+                    <div class="alert alert-success">
+                        <strong>Route A:</strong> Clear conditions, optimal for transport.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Planner Panel -->
+        <div id="ai-planner" class="content-panel">
+            <div class="ai-recommendations">
+                <h3>🧠 AI Harvest & Transport Recommendations</h3>
+                <div class="recommendation-item">
+                    <strong>🌾 Farm 22 - Tomatoes</strong><br>
+                    Optimal harvest: Tomorrow 6:00 AM<br>
+                    <small>Weather window closes in 18 hours</small>
+                </div>
+                <div class="recommendation-item">
+                    <strong>🚚 Transport Assignment</strong><br>
+                    Use Truck T-001 via Route A to Market B<br>
+                    <small>Est. profit: ₹8,500 | Risk: Low</small>
+                </div>
+                <div class="recommendation-item">
+                    <strong>⚠ Storage Alert</strong><br>
+                    Warehouse W-3 reaching 90% capacity<br>
+                    <small>Prioritize shipments to Market C</small>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h4>📊 Harvest Timeline Optimization</h4>
+                <canvas id="harvestChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="alert alert-warning">
+                <strong>🌧 Weather Impact:</strong> Rain forecasted in 2 days. Recommend advancing 3 harvest schedules.
+            </div>
+
+            <div class="alert alert-success">
+                <strong>💡 Efficiency Tip:</strong> Combining Farm 15 & 16 deliveries can save ₹1,200 in fuel costs.
+            </div>
+        </div>
+
+        <!-- Market Panel -->
+        <div id="market" class="content-panel">
+            <h3>📈 Market Intelligence Dashboard</h3>
+            
+            <div class="chart-container">
+                <h4>💰 Live Market Prices</h4>
+                <div class="price-trend">
+                    <strong>Tomatoes:</strong> ₹18/kg 
+                    <span class="trend-up">↗ +12%</span>
+                </div>
+                <div class="price-trend">
+                    <strong>Onions:</strong> ₹25/kg 
+                    <span class="trend-down">↘ -5%</span>
+                </div>
+                <div class="price-trend">
+                    <strong>Rice:</strong> ₹45/kg 
+                    <span class="trend-up">↗ +3%</span>
+                </div>
+                <canvas id="priceChart" width="400" height="200"></canvas>
+            </div>
+
+            <div class="alert alert-danger">
+                <strong>🚨 Market Alert:</strong> Oversupply of tomatoes expected at Market A. Redirect to Market B for better prices.
+            </div>
+
+            <div class="alert alert-success">
+                <strong>📅 Festival Demand:</strong> Rice demand to spike 40% next week due to local festival. Plan accordingly.
+            </div>
+
+            <div class="metric-card">
+                <h4>🎯 Recommended Actions</h4>
+                <ul style="margin-top: 10px;">
+                    <li>Hold onion harvest for 3 days - price recovery expected</li>
+                    <li>Expedite tomato sales to Market B today</li>
+                    <li>Increase rice production planning for festival demand</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Field Sync Panel -->
+        <div id="sync" class="content-panel">
+            <h3>📱 Field Data Entry & SMS Alerts</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h4>📝 Agent Data Entry</h4>
+                    <form onsubmit="submitFieldData(event)">
+                        <div class="form-group">
+                            <label>Farm ID</label>
+                            <select>
+                                <option>Farm 22 - Tomatoes</option>
+                                <option>Farm 15 - Onions</option>
+                                <option>Farm 08 - Rice</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Crop Status</label>
+                            <select>
+                                <option>Ready for Harvest</option>
+                                <option>75% Mature</option>
+                                <option>50% Mature</option>
+                                <option>Recently Planted</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Estimated Yield (kg)</label>
+                            <input type="number" placeholder="2500">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea rows="3" placeholder="Any issues or observations..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">📤 Submit Data</button>
+                    </form>
+                </div>
+                
+                <div>
+                    <h4>💬 Recent SMS Alerts Sent</h4>
+                    <div class="alert alert-success">
+                        <strong>To: Farmer Raj Kumar</strong><br>
+                        "Harvest onions tomorrow 6AM. Truck 02 will arrive 8AM. Destination: Market C."<br>
+                        <small>Sent: 2 hours ago</small>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <strong>To: Driver Mohan</strong><br>
+                        "Route B flooded. Use Route A instead. Extra 15 min travel time."<br>
+                        <small>Sent: 45 minutes ago</small>
+                    </div>
+                    
+                    <div class="alert alert-success">
+                        <strong>To: Warehouse Manager</strong><br>
+                        "Incoming: 3 tons tomatoes at 2PM. Prepare cold storage section B."<br>
+                        <small>Sent: 30 minutes ago</small>
+                    </div>
+
+                    <h4>🌐 Language Support</h4>
+                    <div class="form-group">
+                        <label>Alert Language</label>
+                        <select>
+                            <option>Hindi - हिंदी</option>
+                            <option>English</option>
+                            <option>Telugu - తెలుగు</option>
+                            <option>Tamil - தமிழ்</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin" class="content-panel">
+            <h3>👥 Cooperative Management Dashboard</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <h4>📊 Performance Analytics</h4>
+                    <div class="chart-container">
+                        <canvas id="performanceChart" width="300" height="200"></canvas>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <h4>📈 This Week's Stats</h4>
+                        <p><strong>Total Harvested:</strong> 125 tons</p>
+                        <p><strong>Revenue Generated:</strong> ₹2,45,000</p>
+                        <p><strong>Spoilage Rate:</strong> 3.2% (↓ 1.1%)</p>
+                        <p><strong>Vehicle Utilization:</strong> 87%</p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4>👨‍💼 User Management</h4>
+                    <div class="vehicle-card">
+                        <strong>Raj Kumar</strong> - Farmer<br>
+                        <span class="status-indicator status-good"></span>Active<br>
+                        <small>Farms: 3 | Last sync: 2 hours ago</small>
+                    </div>
+                    
+                    <div class="vehicle-card">
+                        <strong>Suresh Singh</strong> - Field Agent<br>
+                        <span class="status-indicator status-good"></span>Active<br>
+                        <small>Area: Zone A | Data entries today: 12</small>
+                    </div>
+                    
+                    <div class="vehicle-card">
+                        <strong>Mohan Lal</strong> - Driver<br>
+                        <span class="status-indicator status-warning"></span>On Route<br>
+                        <small>Vehicle: T-001 | ETA: 45 minutes</small>
+                    </div>
+
+                    <h4>📅 Schedule Management</h4>
+                    <div class="form-group">
+                        <button class="btn" onclick="generateReport()">📄 Generate Weekly Report</button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" onclick="exportData()">📊 Export Data (CSV)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the map
+        let map;
+        let harvestChart, priceChart, performanceChart;
+
+        function initMap() {
+            map = L.map('map').setView([20.5937, 78.9629], 8);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add farm markers
+            const farms = [
+                {lat: 20.6, lng: 78.9, name: "Farm 22 - Tomatoes", status: "ready"},
+                {lat: 20.5, lng: 79.0, name: "Farm 15 - Onions", status: "75%"},
+                {lat: 20.7, lng: 78.8, name: "Farm 08 - Rice", status: "growing"}
+            ];
+
+            farms.forEach(farm => {
+                const color = farm.status === 'ready' ? 'green' : 
+                             farm.status === '75%' ? 'orange' : 'red';
+                
+                L.circleMarker([farm.lat, farm.lng], {
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 0.7,
+                    radius: 8
+                }).bindPopup(<b>${farm.name}</b><br>Status: ${farm.status}).addTo(map);
+            });
+
+            // Add vehicle markers
+            const vehicles = [
+                {lat: 20.55, lng: 78.95, name: "Truck T-001", type: "truck"},
+                {lat: 20.65, lng: 78.85, name: "Tractor TR-003", type: "tractor"}
+            ];
+
+            vehicles.forEach(vehicle => {
+                const icon = vehicle.type === 'truck' ? '🚛' : '🚜';
+                L.marker([vehicle.lat, vehicle.lng]).bindPopup(${icon} ${vehicle.name}).addTo(map);
+            });
+        }
+
+        function initCharts() {
+            // Harvest Timeline Chart
+            const harvestCtx = document.getElementById('harvestChart').getContext('2d');
+            harvestChart = new Chart(harvestCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Today', 'Tomorrow', 'Day 3', 'Day 4', 'Day 5'],
+                    datasets: [{
+                        label: 'Scheduled Harvests (tons)',
+                        data: [12, 18, 8, 15, 22],
+                        backgroundColor: 'rgba(76, 175, 80, 0.8)'
+                    }]
+                }
+            });
+
+            // Price Chart
+            const priceCtx = document.getElementById('priceChart').getContext('2d');
+            priceChart = new Chart(priceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Tomatoes (₹/kg)',
+                        data: [16, 17, 15, 18, 19, 18, 18],
+                        borderColor: 'rgb(255, 99, 132)',
+                        tension: 0.1
+                    }, {
+                        label: 'Onions (₹/kg)',
+                        data: [28, 26, 25, 24, 25, 25, 25],
+                        borderColor: 'rgb(54, 162, 235)',
+                        tension: 0.1
+                    }]
+                }
+            });
+
+            // Performance Chart
+            const perfCtx = document.getElementById('performanceChart').getContext('2d');
+            performanceChart = new Chart(perfCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Successful Deliveries', 'Delayed', 'Cancelled'],
+                    datasets: [{
+                        data: [85, 12, 3],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(220, 53, 69, 0.8)'
+                        ]
+                    }]
+                }
+            });
+        }
+
+        function showPanel(panelId) {
+            // Hide all panels
+            document.querySelectorAll('.content-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected panel and activate tab
+            document.getElementById(panelId).classList.add('active');
+            event.target.classList.add('active');
+            
+            // Initialize map when dashboard is shown
+            if (panelId === 'dashboard' && !map) {
+                setTimeout(initMap, 100);
+            }
+        }
+
+        function submitFieldData(event) {
+            event.preventDefault();
+            alert('✅ Field data submitted successfully! SMS alerts will be sent automatically.');
+        }
+
+        function generateReport() {
+            alert('📄 Weekly report generated successfully! Check your downloads folder.');
+        }
+
+        function exportData() {
+            alert('📊 Data exported to CSV successfully! File: agriconnect_data.csv');
+        }
+
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initCharts, 500);
+        });
+
+        // Simulate real-time updates
+        setInterval(function() {
+            // Update random metrics to show live data
+            const metrics = document.querySelectorAll('.metric-value');
+            if (metrics.length > 0) {
+                const randomMetric = metrics[Math.floor(Math.random() * metrics.length)];
+                const currentValue = parseInt(randomMetric.textContent);
+                const newValue = currentValue + Math.floor(Math.random() * 3 - 1);
+                randomMetric.textContent = Math.max(0, newValue);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

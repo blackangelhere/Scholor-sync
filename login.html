@@ -1,198 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Scholar Sync by Hack Zila</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-    }
-    header {
-      background: #1e3a8a;
-      padding: 20px;
-      color: white;
-      text-align: center;
-    }
-    .container {
-      padding: 30px;
-      max-width: 800px;
-      margin: auto;
-    }
-    .form-toggle {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .form-toggle button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      border: none;
-      background-color: #1e3a8a;
-      color: white;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .form-toggle button.active {
-      background-color: #2563eb;
-    }
-    form {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      display: none;
-    }
-    form.active {
-      display: block;
-    }
-    input, select, button[type="submit"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    h2 {
-      color: #333;
-    }
-    #result {
-      background: #e0ffe0;
-      padding: 15px;
-      border-radius: 5px;
-      display: none;
-    }
-    footer {
-      text-align: center;
-      font-size: 14px;
-      color: #888;
-      margin-top: 40px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        
+        body {
+            width: 100%;
+            height: 100vh;
+            background-color: #4CAF50; /* Green agricultural theme */
+            background-image: url('/api/placeholder/800/600');
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 400px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            padding: 40px 30px;
+        }
+        
+        h2 {
+            color: #fff;
+            font-size: 2em;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+            border-bottom: 3px solid #fff;
+        }
+        
+        .form-group input {
+            width: 100%;
+            height: 50px;
+            padding: 0 35px 0 10px;
+            font-size: 1.2em;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+        }
+        
+        .form-group label {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            color: #fff;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+        
+        .form-group input:focus ~ label,
+        .form-group input:valid ~ label {
+            top: -5px;
+            font-size: 0.9em;
+        }
+        
+        .form-group i {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 1.2em;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 15px 0;
+            color: #fff;
+        }
+        
+        .remember-forgot label {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-forgot input {
+            margin-right: 5px;
+        }
+        
+        .remember-forgot a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .remember-forgot a:hover {
+            text-decoration: underline;
+            font-style: italic;
+        }
+        
+        #btn {
+            width: 100%;
+            height: 50px;
+            border-radius: 40px;
+            border: none;
+            font-size: 1.5em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.5s;
+            background-color: #8BC34A; /* Light green for agricultural theme */
+            color: #333;
+        }
+        
+        #btn:hover {
+            background: #689F38; /* Darker green on hover */
+            box-shadow: 0 0 10px rgba(139, 195, 74, 0.8);
+            color: #fff;
+        }
+        
+        .register {
+            text-align: center;
+            color: #fff;
+            margin-top: 15px;
+        }
+        
+        .register a {
+            text-decoration: none;
+            color: #8BC34A;
+            font-weight: 600;
+        }
+        
+        .register a:hover {
+            text-decoration: underline;
+            font-style: italic;
+        }
+        
+        .form-toggle {
+            display: none;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        .success-message {
+            color: #8BC34A;
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: center;
+        }
+        
+        /* Registration form specific styles */
+        #registration-form {
+            display: none;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo i {
+            font-size: 40px;
+            color: #4CAF50;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Scholar Sync</h1>
-    <p>By Hack Zila | Connecting juniors with seniors in your college</p>
-  </header>
-
-  <div class="container">
-    <div class="form-toggle">
-      <button id="showMentee" class="active">I'm a Mentee</button>
-      <button id="showMentor">I'm a Mentor</button>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+        </div>
+        <h2 id="form-title">Login to AgriConnect</h2>
+        
+        <div id="message-box" class="error-message"></div>
+        
+        <!-- Login Form -->
+        <form id="login-form">
+            <div class="form-group">
+                <input type="email" id="login-email" required>
+                <label for="login-email">Email</label>
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" id="login-password" required>
+                <label for="login-password">Password</label>
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            
+            <div class="remember-forgot">
+                <label><input type="checkbox" id="remember"> Remember Me</label>
+                <a href="#" id="forgot-password">Forgot Password?</a>
+            </div>
+            
+            <button id="btn" type="submit">Login</button>
+            
+            <div class="register">
+                <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+            </div>
+        </form>
+        
+        <!-- Registration Form -->
+        <form id="registration-form">
+            <div class="form-group">
+                <input type="text" id="reg-name" required>
+                <label for="reg-name">Full Name</label>
+                <i class="fa-solid fa-user"></i>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" id="reg-email" required>
+                <label for="reg-email">Email</label>
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" id="reg-password" required>
+                <label for="reg-password">Password</label>
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" id="reg-confirm-password" required>
+                <label for="reg-confirm-password">Confirm Password</label>
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            
+            <button id="btn" type="submit">Register</button>
+            
+            <div class="register">
+                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+        </form>
     </div>
 
-    <!-- Mentee Form -->
-    <form id="menteeForm" class="active">
-      <h2>Mentee Signup</h2>
-      <input type="text" id="menteeName" placeholder="Your Name" required>
-      <input type="text" id="menteeCollege" placeholder="Your College Name" required>
-      <select id="menteeYear" required>
-        <option value="">Your Year of Study</option>
-        <option value="1st Year">1st Year</option>
-        <option value="2nd Year">2nd Year</option>
-      </select>
-      <input type="text" id="menteeSkill" placeholder="What do you need help with? (e.g. DSA, Resume)" required>
-      <button type="submit">Find Senior Mentor</button>
-    </form>
-
-    <!-- Mentor Form -->
-    <form id="mentorForm">
-      <h2>Mentor Signup</h2>
-      <input type="text" id="mentorName" placeholder="Your Name" required>
-      <input type="text" id="mentorCollege" placeholder="Your College Name" required>
-      <select id="mentorYear" required>
-        <option value="">Your Year of Study</option>
-        <option value="3rd Year">3rd Year</option>
-        <option value="4th Year">4th Year</option>
-        <option value="Graduate">Graduate</option>
-      </select>
-      <input type="text" id="mentorSkill" placeholder="Skill You Can Help With (e.g. DSA, Resume)" required>
-      <input type="text" id="bookingLink" placeholder="Calendly/Zoom/WhatsApp Link" required>
-      <button type="submit">Register as Mentor</button>
-    </form>
-
-    <div id="result">
-      <h3>Mentor Not Match Found!</h3>
-      <p id="matchInfo"></p>
-    </div>
-  </div>
-
-  <footer>
-    © 2025 Scholar Sync by Hack Zila | Built for Campus Communities
-  </footer>
-
-  <script>
-    const mentors = [];
-
-    // Toggle form views
-    const showMentee = document.getElementById('showMentee');
-    const showMentor = document.getElementById('showMentor');
-    const menteeForm = document.getElementById('menteeForm');
-    const mentorForm = document.getElementById('mentorForm');
-
-    showMentee.addEventListener('click', () => {
-      showMentee.classList.add('active');
-      showMentor.classList.remove('active');
-      menteeForm.classList.add('active');
-      mentorForm.classList.remove('active');
-    });
-
-    showMentor.addEventListener('click', () => {
-      showMentor.classList.add('active');
-      showMentee.classList.remove('active');
-      mentorForm.classList.add('active');
-      menteeForm.classList.remove('active');
-    });
-
-    // Mentor registration
-    mentorForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('mentorName').value;
-      const skill = document.getElementById('mentorSkill').value.toLowerCase();
-      const link = document.getElementById('bookingLink').value;
-      const college = document.getElementById('mentorCollege').value.toLowerCase();
-      const year = document.getElementById('mentorYear').value;
-
-      mentors.push({ name, skill, link, college, year });
-
-      alert("Mentor registered successfully!");
-      this.reset();
-    });
-
-    // Mentee search
-    menteeForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const menteeSkill = document.getElementById('menteeSkill').value.toLowerCase();
-      const menteeCollege = document.getElementById('menteeCollege').value.toLowerCase();
-
-      const match = mentors.find(m =>
-        m.skill.includes(menteeSkill) &&
-        m.college === menteeCollege
-      );
-
-      const resultBox = document.getElementById('result');
-      const matchInfo = document.getElementById('matchInfo');
-
-      if (match) {
-        matchInfo.innerHTML = `
-          🎓 Matched with <strong>${match.name}</strong> (${match.year}) from your college.<br>
-          Skill: <strong>${menteeSkill}</strong><br>
-          👉 <a href="${match.link}" target="_blank">Book a Session</a>
-        `;
-      } else {
-        matchInfo.innerHTML = `
-          😔 No mentor found for "${menteeSkill}" at your college right now.<br>
-          Please try again later or invite seniors to sign up!
-        `;
-      }
-
-      resultBox.style.display = 'block';
-    });
-  </script>
+    <script>
+        // DOM Elements
+        const loginForm = document.getElementById('login-form');
+        const registrationForm = document.getElementById('registration-form');
+        const showRegisterLink = document.getElementById('show-register');
+        const showLoginLink = document.getElementById('show-login');
+        const formTitle = document.getElementById('form-title');
+        const messageBox = document.getElementById('message-box');
+        
+        // Show registration form
+        showRegisterLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            registrationForm.style.display = 'block';
+            formTitle.textContent = 'Register for AgriConnect';
+            messageBox.textContent = '';
+            messageBox.className = 'error-message';
+        });
+        
+        // Show login form
+        showLoginLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            registrationForm.style.display = 'none';
+            loginForm.style.display = 'block';
+            formTitle.textContent = 'Login to AgriConnect';
+            messageBox.textContent = '';
+            messageBox.className = 'error-message';
+        });
+        
+        // Login form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                messageBox.textContent = 'Please fill in all fields';
+                messageBox.className = 'error-message';
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageBox.textContent = 'Please enter a valid email address';
+                messageBox.className = 'error-message';
+                return;
+            }
+            
+            // In a real application, you would:
+            // 1. Send credentials to a server for authentication
+            // 2. Handle the response accordingly
+            
+            // For demo purposes, we'll simulate a successful login
+            messageBox.textContent = 'Login successful! Redirecting...';
+            messageBox.className = 'success-message';
+            
+            // Redirect to agriconnect1.html after a short delay
+            setTimeout(() => {
+                window.location.href = 'agriconnect1.html';
+            }, 1500);
+        });
+        
+        // Registration form submission
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            
+            // Simple validation
+            if (!name || !email || !password || !confirmPassword) {
+                messageBox.textContent = 'Please fill in all fields';
+                messageBox.className = 'error-message';
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                messageBox.textContent = 'Please enter a valid email address';
+                messageBox.className = 'error-message';
+                return;
+            }
+            
+            // Password match validation
+            if (password !== confirmPassword) {
+                messageBox.textContent = 'Passwords do not match';
+                messageBox.className = 'error-message';
+                return;
+            }
+            
+            // Password strength validation
+            if (password.length < 6) {
+                messageBox.textContent = 'Password must be at least 6 characters long';
+                messageBox.className = 'error-message';
+                return;
+            }
+            
+            // In a real application, you would:
+            // 1. Send registration data to a server
+            // 2. Handle the response accordingly
+            
+            // For demo purposes, we'll simulate a successful registration
+            messageBox.textContent = 'Registration successful! Redirecting...';
+            messageBox.className = 'success-message';
+            
+            // Redirect to agriconnect1.html after a short delay
+            setTimeout(() => {
+                window.location.href = 'agriconnect1.html';
+            }, 1500);
+        });
+        
+        // Forgot password functionality
+        document.getElementById('forgot-password').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            
+            if (!email) {
+                messageBox.textContent = 'Please enter your email first';
+                messageBox.className = 'error-message';
+                return;
+            }
+            
+            // In a real application, you would:
+            // 1. Send a password reset request to the server
+            // 2. Handle the response accordingly
+            
+            messageBox.textContent = 'Password reset link has been sent to your email';
+            messageBox.className = 'success-message';
+        });
+    </script>
 </body>
 </html>
